@@ -59,7 +59,7 @@ $route['user-profile/simpan'] = 'user_profile/simpan';
 
 $route['pengajuan-budget'] = 'pengajuan_budget';
 $route['pengajuan-budget/simpan'] = 'pengajuan_budget/simpan';
-
+$route['pengajuan-budget/konfirmasi'] = 'pengajuan_budget/konfirmasi';
 $route['user-notifikasi'] = 'user_notifikasi';
 $route['user-notifikasi/view'] = 'user_notifikasi/view';
 

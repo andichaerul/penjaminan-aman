@@ -37,4 +37,21 @@ class Pengajuan_budget extends CI_Controller
 		];
 		echo json_encode($data);
 	}
+
+	public function konfirmasi()
+	{
+		$update = [
+			"alasan_tolak" => $this->input->post("alasan_tolak"),
+			"status" => $this->input->post("pengajuan"),
+			"confirm_by" => $this->session->userdata('id_user'),
+			"dilihat" => '0',
+		];
+		$this->db->where('id', $this->input->post("id"));
+		$this->db->update('pengajuan_budget', $update);
+		header('Content-Type: application/json; charset=utf-8');
+		$data = [
+			"status" => "success",
+		];
+		echo json_encode($data);
+	}
 }

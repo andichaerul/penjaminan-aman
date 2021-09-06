@@ -18,9 +18,10 @@ class User_notifikasi extends CI_Controller
 		$data = $this->user_notifikasi_model->get();
 		$notif = [];
 		foreach ($data->result() as $row) {
+			$user_id = $this->session->userdata('id_user');
 			$notif[] = [
 				"id" => $row->id,
-				"pesan" => ($row->status == "2") ? "Hy, Pengajuan budget dengan no ref " . md5($row->id) . " telah disetujui" : "Hy, Pengajuan budget dengan no ref " . md5($row->id) . " di tolak karena " . $row->alasan_tolak . "",
+				"pesan" => ($row->status == "2") ? "Hy, Pengajuan budget dengan no ref " . noSurat($user_id, $row->id, $row->tgl) . " telah disetujui" : "Hy, Pengajuan budget dengan no ref " . noSurat($user_id, $row->id, $row->tgl) . " di tolak karena " . $row->alasan_tolak . "",
 			];
 		}
 		header('Content-Type: application/json; charset=utf-8');
