@@ -7,7 +7,7 @@
 	<title><?php echo $title ?> &mdash; Penjaminan-aman</title>
 
 	<!-- General CSS Files -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap.min.css") ?>">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 	<!-- CSS Libraries -->
@@ -49,21 +49,15 @@
 					</li>
 					<li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
 							<img alt="image" src="<?php echo base_url() ?>/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-							<div class="d-sm-none d-lg-inline-block">Hi, <?php echo $this->session->userdata("nama_lengkap") ?></div>
+							<div class="d-sm-none d-lg-inline-block">Hi, <?php echo $this->session->userdata("nama_lengkap") ?> | <?php echo $this->session->userdata('level'); ?></div>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right">
 							<div class="dropdown-title">Logged in 5 min ago</div>
 							<a href="<?php echo base_url("user-profile") ?>" class="dropdown-item has-icon">
 								<i class="far fa-user"></i> Profile
 							</a>
-							<a href="features-activities.html" class="dropdown-item has-icon">
-								<i class="fas fa-bolt"></i> Activities
-							</a>
-							<a href="features-settings.html" class="dropdown-item has-icon">
-								<i class="fas fa-cog"></i> Settings
-							</a>
 							<div class="dropdown-divider"></div>
-							<a href="#" class="dropdown-item has-icon text-danger">
+							<a href="<?php echo base_url("login/logout") ?>" class="dropdown-item has-icon text-danger">
 								<i class="fas fa-sign-out-alt"></i> Logout
 							</a>
 						</div>
@@ -73,19 +67,21 @@
 			<div class="main-sidebar">
 				<aside id="sidebar-wrapper">
 					<div class="sidebar-brand">
-						<a href="index.html">Stisla</a>
+						<a href="<?php echo base_url("dashboard") ?>">Solusi Penjaminan Aman</a>
 					</div>
 					<div class="sidebar-brand sidebar-brand-sm">
-						<a href="index.html">St</a>
+						<a href="<?php echo base_url("dashboard") ?>">SPA</a>
 					</div>
 					<ul class="sidebar-menu">
 						<li class="menu-header">Dashboard</li>
 						<li class="nav-item">
 							<a href="<?php echo base_url("dashboard") ?>" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
 						</li>
-						<li class="nav-item">
-							<a href="<?php echo base_url("pengajuan-budget") ?>" class="nav-link"><i class="fas fa-fire"></i><span>Pengajuan Budget</span></a>
-						</li>
+						<?php if ($this->session->userdata("level") == "staf") : ?>
+							<li class="nav-item">
+								<a href="<?php echo base_url("pengajuan-budget") ?>" class="nav-link"><i class="fas fa-fire"></i><span>Pengajuan Budget</span></a>
+							</li>
+						<?php endif; ?>
 					</ul>
 				</aside>
 			</div>
@@ -124,37 +120,71 @@
 
 	<!-- Page Specific JS File -->
 	<script>
-		clearInterval
 		$(document).ready(function() {
-			setInterval(function() {
-				$.ajax({
-					type: "post",
-					url: "<?php echo base_url("user-notifikasi") ?>",
-					data: {
-						"id_user": "<?php echo $this->session->userdata("id_user") ?>"
-					},
-					dataType: "json",
-					success: function(response) {
-						$("#notifikasi").html("");
-						console.log(response.length);
-						if (response.length > 0) {
-							$("#lonceng").addClass("beep");
-						} else {
-							$("#lonceng").removeClass("beep");
-						};
-						response.forEach(function(row, index) {
-							$("#notifikasi").append(
-								'<a href="<?php echo base_url("user-notifikasi/view") ?>?id=' + row["id"] + '" class="dropdown-item dropdown-item-unread">' +
-								'<div class="dropdown-item-desc">' +
-								' ' + row["pesan"] + ' ' +
-								'</div>' +
-								'</a>'
-							);
-						});
-					},
-					beforeSend: function() {},
-				});
-			}, 3000);
+			<?php if ($this->session->userdata("level") == "staf") : ?>
+				setInterval(function() {
+					$.ajax({
+						type: "post",
+						url: "<?php echo base_url("user-notifikasi") ?>",
+						data: {
+							"id_user": "<?php echo $this->session->userdata("id_user") ?>"
+						},
+						dataType: "json",
+						success: function(response) {
+							$("#notifikasi").html("");
+							console.log(response.length);
+							if (response.length > 0) {
+								$("#lonceng").addClass("beep");
+							} else {
+								$("#lonceng").removeClass("beep");
+							};
+							response.forEach(function(row, index) {
+								$("#notifikasi").append(
+									'<a href="<?php echo base_url("user-notifikasi/view") ?>?id=' + row["id"] + '" class="dropdown-item dropdown-item-unread">' +
+									'<div class="dropdown-item-desc">' +
+									' ' + row["pesan"] + ' ' +
+									'</div>' +
+									'</a>'
+								);
+							});
+						},
+						beforeSend: function() {},
+					});
+				}, 3000);
+			<?php endif; ?>
+
+			<?php if ($this->session->userdata("level") == "supervisor") : ?>
+				setInterval(function() {
+					$.ajax({
+						type: "post",
+						url: "<?php echo base_url("user-notifikasi") ?>",
+						data: {
+							"id_user": "<?php echo $this->session->userdata("id_user") ?>"
+						},
+						dataType: "json",
+						success: function(response) {
+							$("#notifikasi").html("");
+							console.log(response.length);
+							if (response.length > 0) {
+								$("#lonceng").addClass("beep");
+							} else {
+								$("#lonceng").removeClass("beep");
+							};
+							response.forEach(function(row, index) {
+								$("#notifikasi").append(
+									'<a href="<?php echo base_url("user-notifikasi/view_spv") ?>?id=' + row["id"] + '" class="dropdown-item dropdown-item-unread">' +
+									'<div class="dropdown-item-desc">' +
+									' ' + row["pesan"] + ' ' +
+									'</div>' +
+									'</a>'
+								);
+							});
+						},
+						beforeSend: function() {},
+					});
+				}, 3000);
+			<?php endif; ?>
+
 
 		});
 	</script>

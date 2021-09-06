@@ -30,6 +30,10 @@ class User_profile extends CI_Controller
 		if ($password != $c_password) {
 			$this->responseFail("password", "Confirm password salah");
 		}
+		if (empty($password) || empty($c_password)) {
+			$this->responseFail("password", "Password tidak boleh kosong");
+		}
+
 		$this->db->trans_start();
 		$dataUser = [
 			'username' => $username,

@@ -157,6 +157,11 @@
 
 		$("#simpan").click(function(e) {
 			e.preventDefault();
+			if (confirm('Anda yakin?')) {
+				null;
+			} else {
+				return false;
+			}
 			$.ajax({
 				type: "post",
 				url: "<?php echo base_url("pengajuan-budget/konfirmasi") ?>",

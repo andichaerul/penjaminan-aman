@@ -3,6 +3,10 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="form-group">
+					<label for="">Tanggal</label>
+					<input type="text" readonly class="form-control" id="tgl" value="<?php echo date("Y-m-d") ?>">
+				</div>
+				<div class="form-group">
 					<label for="">Nama Lengkap</label>
 					<input type="text" readonly class="form-control" id="nama_lengkap" value="<?php echo $this->session->userdata("nama_lengkap") ?>">
 				</div>
@@ -25,7 +29,11 @@
 	$(document).ready(function() {
 		$("#simpan").click(function(e) {
 			e.preventDefault();
-			var kirim = $(".kirim").serialize();
+			if (confirm('Anda yakin?')) {
+				null;
+			} else {
+				return false;
+			}
 			$.ajax({
 				type: "post",
 				url: "<?php echo base_url("pengajuan-budget/simpan") ?>",

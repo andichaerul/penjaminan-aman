@@ -71,9 +71,12 @@
 					<thead>
 						<tr>
 							<th>No</th>
+							<th>No Pengajuan</th>
 							<th>Tgl</th>
 							<th>Deskripsi</th>
 							<th>Status</th>
+							<th>Alasan Ditolak</th>
+							<th>Spv By</th>
 							<th>Total</th>
 						</tr>
 					</thead>
@@ -82,9 +85,12 @@
 						<?php foreach ($list->result() as $row) : ?>
 							<tr>
 								<td><?php echo $i++ ?></td>
+								<td><?php echo $noSurat = noSurat($row->user_id, $row->id, $row->tgl) ?></td>
 								<td><?php echo $row->tgl ?></td>
 								<td><?php echo $row->req_deskripsi ?></td>
 								<td><?php echo $row->strStatus ?></td>
+								<td><?php echo $row->alasan_tolak ?></td>
+								<td><?php echo $row->nama_lengkap ?></td>
 								<td><?php echo  number_format($row->budget_nominal) ?></td>
 							</tr>
 						<?php endforeach; ?>

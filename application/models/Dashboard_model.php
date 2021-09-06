@@ -18,15 +18,22 @@ class Dashboard_model extends CI_Model
 		$userId = $this->session->userdata("id_user");
 		$data = $this->db->query("SELECT
 		*,
-	CASE `status` 
-			WHEN '1' THEN 'Menunggu'
-			WHEN '2' THEN 'Disetujui'
-			WHEN '3' THEN 'Ditolak'
-	END AS strStatus
-		FROM
-			pengajuan_budget 
+	CASE
+			`status` 
+			WHEN '1' THEN
+			'Menunggu' 
+			WHEN '2' THEN
+			'Disetujui' 
+			WHEN '3' THEN
+			'Ditolak' 
+		END AS strStatus 
+	FROM
+		pengajuan_budget
+		JOIN user_profile ON user_profile.id_user = pengajuan_budget.confirm_by
 	WHERE
-		user_id = '{$userId}'");
+		user_id = '{$userId}'
+		ORDER BY `status` 
+		");
 		return $data;
 	}
 
@@ -41,7 +48,7 @@ class Dashboard_model extends CI_Model
 	END AS strStatus
 		FROM
 			pengajuan_budget 
-			JOIN user_profile ON user_profile.id_user = pengajuan_budget.user_id");
+			JOIN user_profile ON user_profile.id_user = pengajuan_budget.user_id 	ORDER BY `status` ");
 		return $data;
 	}
 }

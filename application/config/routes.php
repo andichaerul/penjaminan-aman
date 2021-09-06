@@ -51,6 +51,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 $route['login'] = 'login';
 $route['login/auth'] = 'login/auth';
+$route['login/logout'] = 'login/logout';
 
 $route['dashboard'] = 'dashboard';
 
@@ -62,6 +63,7 @@ $route['pengajuan-budget/simpan'] = 'pengajuan_budget/simpan';
 $route['pengajuan-budget/konfirmasi'] = 'pengajuan_budget/konfirmasi';
 $route['user-notifikasi'] = 'user_notifikasi';
 $route['user-notifikasi/view'] = 'user_notifikasi/view';
+$route['user-notifikasi/view_spv'] = 'user_notifikasi/view_spv';
 
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';

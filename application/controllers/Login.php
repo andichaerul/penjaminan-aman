@@ -21,4 +21,10 @@ class Login extends CI_Controller
 		$password = md5($this->input->post("password"));
 		$this->login_model->auth($username, $password);
 	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect(base_url("login"), 'refresh');
+	}
 }
